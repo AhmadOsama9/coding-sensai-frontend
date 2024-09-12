@@ -31,7 +31,7 @@ const LandingPage = () => {
               Welcome to the Tech Murim World
             </h1>
             <h2 className="text-3xl mt-4 text-primary font-semibold">
-              You can call me Great Sensai
+              You can call me Sensai
             </h2>
             <h3 className="text-2xl mt-4 text-secondaryText">
               I shall take you as my disciple
