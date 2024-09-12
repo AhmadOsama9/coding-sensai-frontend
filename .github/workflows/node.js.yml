@@ -25,7 +25,7 @@ jobs:
       run: npm run build
 
     - name: Deploy to S3
-      uses: aws-actions/s3-sync-action@v1
+      uses: aws-actions/s3-sync-action@v0.5.0  # Correct action version
       with:
         args: --acl public-read --delete
         source-dir: './dist'  # The directory containing your build output
@@ -34,4 +34,3 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: 'us-east-1'  # Replace with your bucket’s region
-
