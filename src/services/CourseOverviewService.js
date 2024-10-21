@@ -41,7 +41,7 @@ export const incrementRefreshCount = (courseId) => {
 export const fetchCourseOverviewFromAPI = async (courseId) => {
   console.log('Fetching course overview data from API');
 
-  const response = await fetch(`http://localhost:4000/api/course/overview/${courseId}`, {
+  const response = await fetch(`https://14gl3r3q1j.execute-api.us-east-1.amazonaws.com/api/course/overview/${courseId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

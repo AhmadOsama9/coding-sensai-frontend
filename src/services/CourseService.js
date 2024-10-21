@@ -40,7 +40,7 @@ export const incrementRefreshCount = () => {
 
 // Fetch courses from the API
 export const fetchCoursesFromAPI = async (token) => {
-  const response = await fetch('http://localhost:4000/api/course', {
+  const response = await fetch('https://14gl3r3q1j.execute-api.us-east-1.amazonaws.com/api/course', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

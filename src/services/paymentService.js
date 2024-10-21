@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const API_BASE_URL = "http://localhost:4000/api";
+const API_BASE_URL = "https://14gl3r3q1j.execute-api.us-east-1.amazonaws.com/api";
 
 export const processPayment = async () => {
     try {

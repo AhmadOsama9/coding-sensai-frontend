@@ -32,7 +32,7 @@ export const logUserActivityOncePerDay = async (token) => {
 
 const logUserActivity = async (token) => {
     console.log("Logging user activity");
-    const response = await fetch("http://localhost:4000/api/dashboard/log", {
+    const response = await fetch("https://14gl3r3q1j.execute-api.us-east-1.amazonaws.com/api/dashboard/log", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

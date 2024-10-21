@@ -40,7 +40,7 @@ export const fetchStartedCoursesFromAPI = async (token) => {
         throw new Error("Unauthorized: Please log in to access this course.");
     }
 
-    const response = await fetch("http://localhost:4000/api/course/user/started", {
+    const response = await fetch("https://14gl3r3q1j.execute-api.us-east-1.amazonaws.com/api/course/user/started", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
