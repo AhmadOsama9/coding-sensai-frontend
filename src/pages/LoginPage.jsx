@@ -3,8 +3,8 @@ import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import loginPage from "../assets/loginPage.jpeg";
 
-const GOOGLE_LOGIN_URL = "http://localhost:4000/api/user/auth/google";
-const GITHUB_LOGIN_URL = "http://localhost:4000/api/user/auth/github";
+const GOOGLE_LOGIN_URL = "https://14gl3r3q1j.execute-api.us-east-1.amazonaws.com/api/user/auth/google";
+const GITHUB_LOGIN_URL = "https://14gl3r3q1j.execute-api.us-east-1.amazonaws.com/api/user/auth/github";
 
 const LoginPage = () => {
   const handleGoogleLogin = () => {
