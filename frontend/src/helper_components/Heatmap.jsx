@@ -10,45 +10,52 @@ function Heatmap({ data = [] }) {
     }
   ];
 
-  // Tailwind colors as JavaScript variables
+  // Modern color palette that matches our design system
   const colors = {
-    primary: '#BC002D',        // Deep red
-    secondary: '#D4AF37',      // Goldish yellow
-    background: '#F5F5DC',     // Beige
-    cardBg: '#FFFFFF',         // White
-    primaryText: '#2C1B18',    // Dark brown
-    secondaryText: '#704214',  // Medium brown
-    border: '#D9C3A3',         // Light brown
-    hoverPrimary: '#A3001E',   // Darker red
-    muted: '#A89988',          // Muted brown
-    accent: '#FFDB58',         // Light gold
+    background: '#F9FAFB',   // Light gray background
+    text: '#374151',         // Dark gray text
+    muted: '#9CA3AF',        // Muted text
+    primary: '#8B5CF6',      // Purple as primary
+    primaryLight: '#C4B5FD',  // Light purple
+    primaryDark: '#6D28D9',  // Dark purple
+    success: '#10B981',      // Green for success
+    warning: '#F59E0B',      // Amber for warning
   };
 
   const options = {
     chart: {
       type: 'heatmap',
+      fontFamily: 'Inter, system-ui, sans-serif',
       toolbar: {
         show: false
       },
-      responsive: [
-        {
-          breakpoint: 768, // For smaller screens
-          options: {
-            chart: {
-              height: 300 // Adjust height for mobile
-            }
-          }
+      background: 'transparent',
+      animations: {
+        enabled: true,
+        easing: 'easeinout',
+        dynamicAnimation: {
+          speed: 800
         }
-      ]
+      }
     },
-    colors: [colors.primary], // Use your primary color
+    dataLabels: {
+      enabled: false
+    },
+    colors: [colors.primary],
     xaxis: {
       categories: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
       labels: {
         style: {
-          colors: colors.secondaryText, // Adjust label color
-          fontSize: '12px'
+          colors: colors.text,
+          fontSize: '12px',
+          fontWeight: 500
         }
+      },
+      axisBorder: {
+        show: false
+      },
+      axisTicks: {
+        show: false
       }
     },
     yaxis: {
@@ -57,50 +64,81 @@ function Heatmap({ data = [] }) {
       }
     },
     tooltip: {
+      enabled: true,
+      theme: 'light',
+      style: {
+        fontSize: '12px',
+        fontFamily: 'Inter, system-ui, sans-serif'
+      },
       y: {
         formatter: function (val) {
-          return `${val}`;
+          return `${val} points`;
+        },
+        title: {
+          formatter: function () {
+            return '';
+          }
         }
       }
     },
     plotOptions: {
       heatmap: {
+        radius: 4,
+        enableShades: true,
+        shadeIntensity: 0.5,
         colorScale: {
           ranges: [
             {
               from: 0,
+              to: 0,
+              name: 'No activity',
+              color: '#F3F4F6' // Light gray for no activity
+            },
+            {
+              from: 1,
               to: 20,
               name: 'Low',
-              color: colors.accent // Light color for low range
+              color: colors.primaryLight // Light purple for low activity
             },
             {
               from: 21,
-              to: 40,
+              to: 50,
               name: 'Medium',
-              color: colors.secondary // Goldish yellow for medium range
+              color: colors.primary // Regular purple for medium activity
             },
             {
-              from: 41,
-              to: 70,
+              from: 51,
+              to: 1000,
               name: 'High',
-              color: colors.primary // Deep red for high range
+              color: colors.primaryDark // Dark purple for high activity
             }
           ]
         }
       }
     },
+    stroke: {
+      width: 1,
+      colors: ['#fff']
+    },
     grid: {
       padding: {
-        left: 0,
-        right: 0,
-        top: 10,
-        bottom: 10
+        left: 20,
+        right: 20
+      },
+      borderColor: '#F3F4F6'
+    },
+    states: {
+      hover: {
+        filter: {
+          type: 'lighten',
+          value: 0.15,
+        }
       }
     }
   };
 
   return (
-    <div className="container mx-auto my-8 px-4 py-4 bg-cardBg border border-border rounded-lg shadow-md">
+    <div className="w-full h-64 md:h-80">
       <Chart options={options} series={seriesData} type="heatmap" height="100%" />
     </div>
   );

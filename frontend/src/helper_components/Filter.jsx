@@ -2,24 +2,26 @@ import React from 'react';
 
 function Filter({ onFilterChange, tracks, activeTrack }) {
   return (
-    <div className="filter flex flex-row mb-4 space-x-4">
+    <div className="flex flex-wrap items-center gap-2">
+      <div className="text-sm font-medium text-gray-600 mr-1">Filter by:</div>
       <button
-        className={`p-1 rounded-xl ${
+        className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
           activeTrack === ''
-            ? 'bg-primary text-cardBg'
-            : 'bg-hoverPrimary text-cardBg'
+            ? 'bg-purple-600 text-white shadow-md'
+            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
         }`}
         onClick={() => onFilterChange('')}
       >
         All Tracks
       </button>
+      
       {tracks.map((track, index) => (
         <button
           key={index}
-          className={`p-1 rounded-xl ${
+          className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
             activeTrack === track
-              ? 'bg-primary text-cardBg'
-              : 'bg-hoverPrimary text-cardBg'
+              ? 'bg-purple-600 text-white shadow-md'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           }`}
           onClick={() => onFilterChange(track)}
         >

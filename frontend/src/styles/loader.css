@@ -1,0 +1,132 @@
+/* loader.css */
+
+.loader-container {
+    position: relative;
+    background-color: #eee;
+    min-height: 380px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader {
+    width: 80px;
+    height: 40px;
+    position: relative;
+}
+
+.katana {
+    position: absolute;
+    width: 4px;
+    height: 12px;
+    background-color: #666;
+    border-radius: 1px;
+    bottom: 0;
+}
+
+.katana-left {
+    left: 0;
+    animation: fightLeft 2s ease-in-out infinite 1s;
+}
+
+.katana-right {
+    right: 0;
+    animation: fightRight 2s ease-in-out infinite 1s;
+}
+
+/* Light animations */
+.katana-left:before,
+.katana-right:before {
+    content: '';
+    display: block;
+    width: 2px;
+    height: 25px;
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    border-radius: 1px;
+    animation: showLight 2s ease-in-out infinite;
+}
+
+.katana-left:before {
+    background-color: #87c054; /* Green */
+    animation-delay: 1s;
+}
+
+.katana-right:before {
+    background-color: #f06363; /* Red */
+    animation-delay: 1.5s;
+}
+
+/* Particles */
+.particles {
+    position: absolute;
+    left: 42px;
+    top: 10px;
+    width: 1px;
+    height: 5px;
+    background-color: rgba(51, 51, 51, 0);
+}
+
+.part1 {
+    animation: particles1 2s ease-out infinite 1s;
+}
+
+.part2 {
+    animation: particles2 2s ease-out infinite 1s;
+}
+
+.part3 {
+    animation: particles3 2s ease-out infinite 1.2s;
+}
+
+.part4 {
+    animation: particles4 2s ease-out infinite 1.4s;
+}
+
+.part5 {
+    animation: particles5 2s ease-out infinite 1.6s;
+}
+
+/* Keyframes for animations */
+@keyframes showLight {
+    0%, 100% { max-height: 0; box-shadow: 0 0 0 0; }
+    10%, 80% { max-height: 22px; }
+}
+
+/* Keyframes for the fighting animation */
+@keyframes fightLeft {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(-45deg); }
+}
+
+@keyframes fightRight {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(45deg); }
+}
+
+/* Keyframes for particle animations */
+@keyframes particles1 {
+    0% { transform: translateX(0) translateY(0) scaleY(1); opacity: 1; }
+    100% { transform: translateX(-20px) translateY(-30px) scaleY(2); opacity: 0; }
+}
+
+@keyframes particles2 {
+    0% { transform: translateX(0) translateY(0) scaleY(1); opacity: 1; }
+    100% { transform: translateX(10px) translateY(-20px) scaleY(1.5); opacity: 0; }
+}
+
+@keyframes particles3 {
+    0% { transform: translateX(0) translateY(0) scaleY(1); opacity: 1; }
+    100% { transform: translateX(-15px) translateY(-25px) scaleY(1.8); opacity: 0; }
+}
+
+@keyframes particles4 {
+    0% { transform: translateX(0) translateY(0) scaleY(1); opacity: 1; }
+    100% { transform: translateX(18px) translateY(-30px) scaleY(2); opacity: 0; }
+}
+
+@keyframes particles5 {
+    0% { transform: translateX(0) translateY(0) scaleY(1); opacity: 1; }
+    100% { transform: translateX(-10px) translateY(-20px) scaleY(1.3); opacity: 0; }
+}

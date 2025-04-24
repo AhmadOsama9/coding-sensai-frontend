@@ -234,7 +234,7 @@ const MainContent = ({ topic }) => {
       
       
 
-      <TestControls milestoneId={2} topicId={2} mistakeId={3} />
+      {/* <TestControls milestoneId={2} topicId={2} mistakeId={3} /> */}
 
     </div>
   );

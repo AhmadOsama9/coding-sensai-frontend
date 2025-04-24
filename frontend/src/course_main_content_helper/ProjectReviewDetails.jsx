@@ -7,8 +7,19 @@ const ProjectReviewDetails = ({ reviewData }) => {
       <h4 className="font-bold text-lg text-primaryText mb-4">Project Review</h4>
       <div className="mb-4">
         <label className="block text-primaryText font-semibold mb-1">Review Status</label>
-        <p className={`p-2 rounded-md ${reviewData.status === 'approved' ? 'bg-green-200 text-green-900' : 'bg-red-200 text-red-900'}`}>
-          {reviewData.status === 'approved' ? 'Approved ✅' : 'Not Reviewed yet ❌'}
+        <p className={`p-2 rounded-md ${
+          reviewData.status === 'succeeded'
+              ? 'bg-green-200 text-green-900'
+              : reviewData.status === 'failed'
+              ? 'bg-red-200 text-red-900'
+              : 'bg-yellow-200 text-yellow-900'
+          }`}
+        >
+        {reviewData.status === 'succeeded' 
+          ? 'Approved ✅' 
+          : reviewData.status === 'failed' 
+          ? 'Failed ❌' 
+          : 'Not Reviewed Yet ⏳'}
         </p>
       </div>
       <div className="mb-4">
@@ -26,3 +37,4 @@ const ProjectReviewDetails = ({ reviewData }) => {
 };
 
 export default ProjectReviewDetails;
+

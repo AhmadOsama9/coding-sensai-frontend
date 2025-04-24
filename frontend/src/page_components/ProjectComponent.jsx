@@ -1,6 +1,4 @@
-// src/components/ProjectComponent.js
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import ProjectReviewDetails from '../course_main_content_helper/ProjectReviewDetails';
 import ProjectSubmissionForm from '../course_main_content_helper/ProjectSubmissionForm';
@@ -11,43 +9,41 @@ import { useAuth } from '../hooks/UseAuth';
 const ProjectComponent = ({ courseId }) => {
   const { token } = useAuth();
   const [projectData, setProjectData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
   const [showProjectReview, setShowProjectReview] = useState(false);
-  const [loadProjectDetails, setLoadProjectDetails] = useState(false);
   const [reviewData, setReviewData] = useState(null);
 
-  const fetchProjectDetails = async () => {
-    try {
-      if (projectData) {
-        setLoadProjectDetails((prev) => !prev);
-        return;
+  useEffect(() => {
+    const fetchProjectDetails = async () => {
+      try {
+        setLoading(true);
+        const project = await fetchProjectContent(courseId, token);
+        setProjectData(project);
+      } catch (error) {
+        console.error('Error fetching project:', error);
+        setPopupMessage('Failed to fetch project details. Make sure you have completed all the topics.');
+        setShowPopup(true);
+      } finally {
+        setLoading(false);
       }
+    };
 
-      setLoading(true);
-      const project = await fetchProjectContent(courseId, token);
-      setProjectData(project);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching project:', error);
-      setPopupMessage('Failed to fetch project details. Make sure you have completed all the topics.');
-      setShowPopup(true);
-      setLoading(false);
+    if (courseId) {
+      fetchProjectDetails();
     }
-  };
+  }, [courseId, token]);
 
   const handleShowProjectReview = async () => {
     try {
-      if (showProjectReview) {
-        setShowProjectReview((prev) => !prev);
-        return;
+      if (!showProjectReview) {
+        const reviewData = await fetchProjectReview(projectData.course_project_id, token);
+        setReviewData(reviewData);
+        setShowProjectReview(true);
+      } else {
+        setShowProjectReview(false);
       }
-
-      const reviewData = await fetchProjectReview(projectData.course_project_id, token);
-      setReviewData(reviewData);
-      setShowProjectReview(true);
-
     } catch (error) {
       console.error('Error fetching project review:', error);
       setPopupMessage('Failed to fetch project review details.');
@@ -57,15 +53,9 @@ const ProjectComponent = ({ courseId }) => {
 
   return (
     <div>
-      <button
-        onClick={fetchProjectDetails}
-        className="bg-accent text-primaryText p-2 rounded-md hover:bg-hoverPrimary focus:outline-none"
-        disabled={loading}
-      >
-        {loading ? 'Loading Project...' : 'Load Project Details'}
-      </button>
-
-      {projectData && loadProjectDetails && (
+      {loading ? (
+        <p className="text-center text-gray-500">Loading Project...</p>
+      ) : projectData ? (
         <div className="mt-4 p-4 bg-white border border-border rounded-lg shadow-sm">
           <h4 className="font-bold text-lg text-primaryText">{projectData.course_project_title}</h4>
           <div className="prose max-w-none text-primaryText">
@@ -80,7 +70,7 @@ const ProjectComponent = ({ courseId }) => {
               className="bg-secondary text-white p-2 rounded-md w-full mt-4 hover:bg-hoverPrimary"
               onClick={handleShowProjectReview}
             >
-              View Submission Result
+              {showProjectReview ? 'Hide Submission Result' : 'View Submission Result'}
             </button>
           ) : (
             <ProjectSubmissionForm
@@ -96,6 +86,8 @@ const ProjectComponent = ({ courseId }) => {
 
           {showProjectReview && <ProjectReviewDetails reviewData={reviewData} />}
         </div>
+      ) : (
+        <p className="text-center text-red-500">Project data could not be loaded.</p>
       )}
 
       <Popout

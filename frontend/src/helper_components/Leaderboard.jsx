@@ -1,43 +1,75 @@
 import React from 'react';
-import { FaUserCircle } from 'react-icons/fa';
+import { FaUserCircle, FaTrophy, FaMedal } from 'react-icons/fa';
+import { GiLaurelCrown } from 'react-icons/gi';
 
 const Leaderboard = ({ topUsers }) => {
+  if (!topUsers || topUsers.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-gray-500">No leaderboard data available yet</p>
+      </div>
+    );
+  }
+  
   return (
-    <div className="max-w-xl mx-auto mt-8 p-4 bg-cardBg shadow-lg rounded-lg">
-      <h2 className="text-2xl font-bold text-center mb-6 text-primary">Leaderboard</h2>
-      <ul>
+    <div className="w-full">
+      <ul className="space-y-3">
         {(topUsers || []).map((user, index) => {
-          let placeClasses = '';
+          // Determine the place styling and icon
+          let badgeClasses, Icon;
+          
           if (index === 0) {
-            placeClasses = 'bg-yellow-400 text-white'; // First place
+            badgeClasses = 'bg-yellow-400 text-yellow-800';
+            Icon = GiLaurelCrown;
           } else if (index === 1) {
-            placeClasses = 'bg-gray-300 text-white'; // Second place
+            badgeClasses = 'bg-gray-300 text-gray-700'; 
+            Icon = FaTrophy;
           } else if (index === 2) {
-            placeClasses = 'bg-yellow-600 text-white'; // Third place
+            badgeClasses = 'bg-amber-600 text-amber-900';
+            Icon = FaMedal;
           } else {
-            placeClasses = 'bg-secondaryBg text-gray-900'; // Other places
+            badgeClasses = 'bg-gray-100 text-gray-500';
+            Icon = null;
           }
 
           return (
             <li
               key={user.username}
-              className={`flex items-center justify-between p-4 mb-2 rounded-lg shadow-md ${placeClasses}`}
+              className={`flex items-center p-3 rounded-lg transition-all ${
+                index < 3 ? 'bg-gray-50 shadow-sm' : ''
+              }`}
             >
-              {user.image_url ? (
-                <img
-                  src={user.image_url}
-                  alt={`${user.username}'s avatar`}
-                  className="w-10 h-10 rounded-full mr-4"
-                  loading="lazy"
-                />
-              ) : (
-                <FaUserCircle className="w-10 h-10 text-gray-500 mr-4" />
-              )}
-
-              <span className="font-bold text-lg text-primary">
-                {index + 1}. {user.username}
+              {/* Position indicator */}
+              <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 mr-3">
+                <span className="font-bold text-gray-700">{index + 1}</span>
+              </div>
+              
+              {/* User image */}
+              <div className="flex-shrink-0 mr-3">
+                {user.image_url ? (
+                  <img
+                    src={user.image_url}
+                    alt={`${user.username}'s avatar`}
+                    className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
+                    loading="lazy"
+                  />
+                ) : (
+                  <FaUserCircle className="w-10 h-10 text-gray-400" />
+                )}
+              </div>
+              
+              {/* Username */}
+              <span className="font-medium text-gray-800 flex-grow">
+                {user.username}
               </span>
-              <span className="font-semibold text-lg text-muted">{user.total_points} points</span>
+              
+              {/* Points with badge */}
+              <div className="flex items-center">
+                <div className={`px-3 py-1 rounded-full ${badgeClasses} flex items-center`}>
+                  {Icon && <Icon className="mr-1" />}
+                  <span className="font-semibold">{user.total_points}</span>
+                </div>
+              </div>
             </li>
           );
         })}

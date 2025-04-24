@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/UseAuth";
+import Loading from "./Loading";
+import Error from "./Error";
 
 const AuthCallback = () => {
     const navigate = useNavigate();
@@ -36,10 +38,10 @@ const AuthCallback = () => {
     }, [navigate, setToken]);
 
     return (
-        <div>
-            {status === 'loading' && <p>Loading...</p>}
-            {status === 'success' && <p>Authentication successful! Redirecting to your dashboard...</p>}
-            {status === 'error' && <p>Error: {errorMessage}</p>}
+        <div className="flex items-center justify-center h-screen">
+            {status === 'loading' && <Loading message="Authenticating... Please wait." />}
+            {status === 'success' && <Loading message="Authentication successful! Redirecting to your dashboard..." />}
+            {status === 'error' && <Error message={errorMessage} />}
         </div>
     );
 }

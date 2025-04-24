@@ -8,11 +8,12 @@ export const AuthProvider = ({ children }) => {
   const [tokenExpiry, setTokenExpiry] = useState(localStorage.getItem('jwt_expiry') || null);
   const [username, setUsername] = useState(localStorage.getItem('username') || null);
   const [imageUrl, setImageUrl] = useState(localStorage.getItem('imageUrl') || null);
+  const [role, setRole] = useState(localStorage.getItem('role') || null);
   const [showLogoutWarning, setShowLogoutWarning] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleSetToken = (newToken, expiresIn, user, image) => {
+  const handleSetToken = (newToken, expiresIn, user, image, userRole = "user") => {
     setToken(newToken);
     setShowLogoutWarning(false);
 
@@ -30,14 +31,17 @@ export const AuthProvider = ({ children }) => {
         setImageUrl(image);
         localStorage.setItem('imageUrl', image);
       }
+      setRole(userRole);
+      localStorage.setItem('role', userRole);
     } else {
-      localStorage.removeItem('jwt');
-      localStorage.removeItem('jwt_expiry');
-      localStorage.removeItem('username');
-      localStorage.removeItem('imageUrl');
+      localStorage.clear();
       setTokenExpiry(null);
       setUsername(null);
       setImageUrl(null);
+      setRole(null);
+      // Also want to close the sidebar when logging out
+      // but I leave that for later and also that problem accours
+      // the screen where it is not xs nor larger
       navigate('/login');
     }
   };
@@ -81,7 +85,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ token, username, imageUrl, setToken: handleSetToken, showLogoutWarning }}>
+    <AuthContext.Provider value={{ token, username, imageUrl, role, setToken: handleSetToken, showLogoutWarning }}>
       {showLogoutWarning && <div>You will be logged out soon due to inactivity.</div>}
       {children}
     </AuthContext.Provider>

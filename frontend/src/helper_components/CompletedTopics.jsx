@@ -8,6 +8,7 @@ import {
     fetchCompletedTopicsDataFromAPI 
 } from '../services/CompletedTopicsService';
 import { useAuth } from '../hooks/UseAuth';
+import { FaBook } from 'react-icons/fa';
 
 const CompletedTopics = () => {
     const [completedTopicsData, setCompletedTopicsData] = useState(null);
@@ -38,50 +39,83 @@ const CompletedTopics = () => {
         fetchData();
     }, [token]);
 
-    if (loading) return <p className="text-center text-primary">Loading...</p>;
-  if (error) return <p className="text-center text-red-500">{error}</p>;
-
-  if (!completedTopicsData || completedTopicsData.length === 0) {
-    return (
-      <div className="container mx-auto my-12 px-6 py-8 bg-cardBg border rounded-lg shadow-md text-center">
-        <h1 className="text-3xl font-bold mb-6 text-primary">Completed Topics</h1>
-        <p className="text-xl text-gray-700">"Young one, you have yet to begin your journey..."</p>
-        <p className="text-lg text-gray-500 mt-6">— The Coding Sensai</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="container mx-auto my-12 px-6 py-8 bg-cardBg border rounded-lg shadow-md">
-      <h1 className="text-3xl font-bold mb-6 text-primary text-center">Completed Topics</h1>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {completedTopicsData.map((course, index) => {
-          const { course_name, completed_topics, total_topics } = course;
-          const percentage = (parseInt(completed_topics, 10) / parseInt(total_topics, 10)) * 100;
-
-          return (
-            <div key={index} className="flex flex-col items-center">
-              <div style={{ width: 120, height: 120 }}>
-                <CircularProgressbar
-                  value={percentage}
-                  text={`${Math.round(percentage)}%`}
-                  styles={buildStyles({
-                    pathColor: `rgba(86, 128, 233, ${percentage / 100})`, // Blue tone based on percentage
-                    textColor: '#000',
-                    trailColor: '#d6d6d6',
-                    backgroundColor: '#3e98c7',
-                  })}
-                />
-              </div>
-              <p className="mt-4 font-semibold text-center text-primary">{course_name}</p>
-              <p className="text-gray-600">{completed_topics} / {total_topics} topics completed</p>
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
             </div>
-          );
-        })}
-      </div>
-    </div>
-  );
+        );
+    }
+    
+    if (error) {
+        return (
+            <div className="text-center py-6">
+                <p className="text-red-500">{error}</p>
+                <button 
+                    onClick={() => fetchCompletedTopicsDataFromAPI(token)}
+                    className="mt-3 text-sm text-purple-600 hover:text-purple-800"
+                >
+                    Try again
+                </button>
+            </div>
+        );
+    }
+
+    if (!completedTopicsData || completedTopicsData.length === 0) {
+        return (
+            <div className="text-center py-8 px-4">
+                <div className="bg-purple-50 p-4 rounded-lg inline-block mb-4">
+                    <FaBook className="text-purple-500 text-2xl mx-auto" />
+                </div>
+                <p className="text-lg text-gray-700 font-medium mb-2">"Young one, you have yet to begin your journey..."</p>
+                <p className="text-sm text-gray-500">— The Coding Sensai</p>
+            </div>
+        );
+    }
+
+    return (
+        <div className="w-full">
+            {completedTopicsData.map((course, index) => {
+                const { course_name, completed_topics, total_topics } = course;
+                const percentage = (parseInt(completed_topics, 10) / parseInt(total_topics, 10)) * 100;
+                let progressColor;
+                
+                if (percentage < 30) progressColor = '#9333ea'; // purple-600
+                else if (percentage < 70) progressColor = '#6366f1'; // indigo-500
+                else progressColor = '#22c55e'; // green-500
+
+                return (
+                    <div key={index} className="mb-4 last:mb-0">
+                        <div className="flex items-center mb-1">
+                            <h3 className="text-gray-800 font-medium flex-1 truncate" title={course_name}>
+                                {course_name}
+                            </h3>
+                            <span className="text-sm text-gray-500">
+                                {completed_topics}/{total_topics}
+                            </span>
+                        </div>
+                        
+                        <div className="w-full bg-gray-200 rounded-full h-2.5">
+                            <div 
+                                className="h-2.5 rounded-full transition-all duration-500"
+                                style={{
+                                    width: `${percentage}%`, 
+                                    backgroundColor: progressColor
+                                }}
+                            ></div>
+                        </div>
+                        
+                        <div className="mt-1 flex justify-between items-center text-xs text-gray-500">
+                            <span>{Math.round(percentage)}% complete</span>
+                            {percentage === 100 && (
+                                <span className="text-green-500 font-medium">Completed!</span>
+                            )}
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
+    );
 };
 
 export default CompletedTopics;

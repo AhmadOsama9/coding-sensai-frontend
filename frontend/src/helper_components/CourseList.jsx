@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCourse } from '../hooks/UseCourse';
+import { FaClock, FaCode, FaChalkboardTeacher } from 'react-icons/fa';
+import courseImage from "../assets/CodingSensaiProjectCourseImage.png";
 
 const CourseList = ({ courses }) => {
   const navigate = useNavigate();
@@ -12,33 +14,60 @@ const CourseList = ({ courses }) => {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-24 text-secondaryText">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {courses.map((course) => (
         <div 
           key={course.id} 
-          className="course-card border rounded-xl p-4 bg-cardBg hover:bg-background cursor-pointer transform hover:scale-105 transition duration-300 ease-in-out"
+          className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:scale-[1.02]"
           onClick={() => handleCourseClick(course)}
         >
-          <img
-            src={course.img_url} 
-            alt={course.name}
-            className="w-full h-48 object-cover mb-4 rounded"
-            loading='lazy'
-          />
-          <h2 className="text-xl font-bold mb-2 text-primaryText">{course.name}</h2>
-          <p className="text-muted mb-4">{course.description}</p>
-          <div className="mt-4">
-            <h3 className="font-semibold">Topics: {course.topics}</h3>
+          {course.img_url ? (
+            <img
+              src={courseImage} 
+              alt={course.name}
+              className="max-h-full max-w-full object-contain"
+              loading="lazy"
+            />
+          ) : (
+            <div className="h-48 bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
+              <FaChalkboardTeacher className="text-white text-5xl" />
+            </div>
+          )}
+          
+          <div className="p-6">
+            <div className="flex items-start justify-between">
+              <h2 className="text-xl font-bold text-gray-800 mb-2 line-clamp-2">{course.name}</h2>
+              <span className="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-medium">
+                {course.topics} Topics
+              </span>
+            </div>
+            
+            <p className="text-gray-600 mb-4 text-sm line-clamp-3">{course.description}</p>
+            
+            <div className="mt-6 border-t border-gray-100 pt-4">
+              <h3 className="text-sm font-semibold text-gray-700 mb-2">Tracks:</h3>
+              <div className="flex flex-wrap gap-2">
+                {course.tracks.map((track, index) => (
+                  <span 
+                    key={index} 
+                    className="text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded-full"
+                  >
+                    {track.name}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
-          <div className="mt-4">
-            <h3 className="font-semibold">Tracks:</h3>
-            <ul className="list-none ml-0 flex flex-wrap">
-              {course.tracks.map((track, index) => (
-                <li key={index} className="bg-accent text-primaryText px-2 py-1 rounded mr-2 mb-2">
-                  {track.name}
-                </li>
-              ))}
-            </ul>
+          
+          <div className="bg-gray-50 py-3 px-6 border-t border-gray-100 flex justify-between items-center">
+            <div className="flex items-center text-gray-500 text-xs">
+              <FaCode className="mr-1" /> 
+              <span>Hands-on Projects</span>
+            </div>
+            <div className="flex items-center text-gray-500 text-xs">
+              <FaClock className="mr-1" />
+              <span>Learn at your pace</span>
+            </div>
           </div>
         </div>
       ))}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { PRICING_PLANS } from '../constants';
 import { useNavigate } from 'react-router-dom';
+import { FaCheck, FaStar } from 'react-icons/fa';
 
 const PricingPage = () => {
     const navigate = useNavigate();
@@ -19,58 +20,96 @@ const PricingPage = () => {
     };
 
     return (
-        <div className="bg-background py-2 px-4 sm:px-6 lg:px-8 sm:pb-8 min-h-screen flex flex-col items-center">
-            <div className="w-full h-full"></div>
-            <div className="max-w-7xl mx-auto text-center">
-                <h1 className="text-4xl font-bold mb-8 text-primary">
-                    Choose Your Plan
+        <div className="min-h-screen bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
+            {/* Hero Section */}
+            <div className="max-w-7xl mx-auto text-center mb-16">
+                <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600">
+                    Choose Your Journey
                 </h1>
-                <div className="flex flex-wrap justify-center gap-6">
-                    {PRICING_PLANS.map((plan, index) => (
+                <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Select the plan that best fits your learning goals and unlock your full potential
+                </p>
+            </div>
+
+            {/* Pricing Cards */}
+            <div className="max-w-7xl mx-auto flex flex-wrap justify-center gap-8">
+                {PRICING_PLANS.map((plan, index) => {
+                    // Check if this is a featured plan
+                    const isFeatured = plan.name === "Premium" || plan.name === "Super Premium";
+                    
+                    return (
                         <div
                             key={index}
-                            className="bg-gradient-to-tr from-secondary to-hoverSecondary backdrop-blur-3xl shadow-lg rounded-3xl p-6 w-full sm:w-80 relative outline outline-1 outline-border h-4/6"
+                            className={`
+                                w-full sm:w-80 lg:w-96 rounded-2xl overflow-hidden transition-all duration-300 transform hover:-translate-y-2
+                                ${isFeatured 
+                                    ? 'bg-gradient-to-b from-purple-600 to-indigo-700 text-white shadow-xl shadow-purple-300/20' 
+                                    : 'bg-white text-gray-800 shadow-lg'
+                                }
+                            `}
                         >
-                            <h2 className="text-2xl font-bold mb-4 text-primary">
-                                {plan.name}
-                            </h2>
-                            <p className="text-secondaryText mb-6">{plan.description}</p>
-                            <div className="text-3xl font-extrabold mb-6 text-muted">
-                                {plan.price}
+                            {/* Plan Header */}
+                            <div className={`p-6 ${isFeatured ? '' : 'border-b border-gray-100'}`}>
+                                {isFeatured && (
+                                    <div className="bg-yellow-500 text-black text-xs font-bold uppercase py-1 px-2 rounded-full inline-flex items-center mb-3">
+                                        <FaStar className="mr-1" /> Recommended
+                                    </div>
+                                )}
+                                <h2 className={`text-2xl font-bold ${isFeatured ? 'text-white' : 'text-gray-800'}`}>
+                                    {plan.name}
+                                </h2>
+                                <p className={`mt-2 ${isFeatured ? 'text-purple-200' : 'text-gray-600'}`}>
+                                    {plan.description}
+                                </p>
+                                <div className={`text-4xl font-extrabold mt-4 ${isFeatured ? 'text-white' : 'text-purple-600'}`}>
+                                    {plan.price}
+                                </div>
                             </div>
-                            <ul className="text-left mb-6 text-primaryText">
-                                {plan.features.map((feature, idx) => (
-                                    <li key={idx} className="mb-2 flex items-center">
-                                        <svg
-                                            className="h-5 w-5 text-muted mr-2"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth="2"
-                                                d="M5 13l4 4L19 7"
-                                            />
-                                        </svg>
-                                        {feature}
-                                    </li>
-                                ))}
-                            </ul>
-                            <button
-                                className="bg-primary text-white py-2 px-4 rounded-full w-full font-semibold hover:bg-hoverPrimary transition"
-                                onClick={() => handlePayment(plan.name)}
-                            >
-                                {plan.buttonLabel}
-                            </button>
 
-                            {/* Decorative border */}
-                            <div className="absolute inset-0 border-4 border-muted rounded-lg -z-10" style={{ borderRadius: '12px' }}></div>
+                            {/* Features List */}
+                            <div className={`px-6 pt-6 pb-8 ${isFeatured ? 'bg-black/20' : 'bg-white'}`}>
+                                <ul className="space-y-4 mb-8">
+                                    {plan.features.map((feature, idx) => (
+                                        <li key={idx} className="flex items-start">
+                                            <span className={`flex-shrink-0 h-6 w-6 rounded-full flex items-center justify-center ${isFeatured ? 'bg-purple-400/30 text-white' : 'bg-purple-100 text-purple-600'}`}>
+                                                <FaCheck className="h-3 w-3" />
+                                            </span>
+                                            <span className={`ml-3 text-sm ${isFeatured ? 'text-white' : 'text-gray-600'}`}>
+                                                {feature}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
+                                
+                                {/* CTA Button */}
+                                <button
+                                    className={`
+                                        w-full py-3 px-6 rounded-lg font-medium text-center transition-all duration-300
+                                        ${isFeatured 
+                                            ? 'bg-white text-purple-700 hover:bg-gray-100' 
+                                            : 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:opacity-90'
+                                        }
+                                    `}
+                                    onClick={() => handlePayment(plan.name)}
+                                >
+                                    {plan.buttonLabel}
+                                </button>
+                            </div>
                         </div>
-                    ))}
-                </div>
+                    );
+                })}
+            </div>
+
+            {/* Additional Info */}
+            <div className="max-w-3xl mx-auto mt-16 text-center">
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">Still have questions?</h3>
+                <p className="text-gray-600 mb-6">We're here to help you choose the right plan for your learning journey.</p>
+                <button 
+                    onClick={() => navigate('/contact')}
+                    className="inline-flex items-center px-6 py-3 border border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 transition-colors"
+                >
+                    Contact Support
+                </button>
             </div>
         </div>
     );

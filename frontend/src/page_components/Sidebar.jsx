@@ -10,6 +10,7 @@ const Sidebar = ({ courseId, topics, onTopicSelect, setShowProject }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
   const { token } = useAuth();
+  const [firstProjectClick, setFirstProjectClick] = useState(false);
 
   const toggleSidebar = () => {
     setIsOpen((prev) => !prev);
@@ -25,8 +26,11 @@ const Sidebar = ({ courseId, topics, onTopicSelect, setShowProject }) => {
   };
 
   const handleProjectClick = () => {
-    setPopupMessage("Make sure you have completed all the topics else you won't be able to access the project");
-    setShowPopup(true);
+    if (!firstProjectClick) {
+      setFirstProjectClick(true);
+      setPopupMessage("Make sure you have completed all the topics else you won't be able to access the project");
+      setShowPopup(true);
+    }
     setShowProject(true);
   };
 

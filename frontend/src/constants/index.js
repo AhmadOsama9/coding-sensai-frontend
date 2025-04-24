@@ -59,7 +59,7 @@ export const TRACKS = ["Blockchain", "mobile-flutter", "Git&Github"];
 export const PRICING_PLANS = [
     {
         name: "Yearly",
-        price: "$210/yr",
+        price: "$$/yr",
         description: "A discounted plan for annual subscriptions.",
         features: [
             "Access to all features",
@@ -70,7 +70,7 @@ export const PRICING_PLANS = [
     },
     {
         name: "Monthly",
-        price: "$20/mo",
+        price: "$/mo",
         description: "A plan for professionals who need more features.",
         features: [
             "Access to all features",
